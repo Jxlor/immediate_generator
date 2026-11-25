@@ -13,15 +13,14 @@ class imm_gen_driver extends uvm_driver #(imm_gen_item);
   endfunction
 
   task run_phase(uvm_phase phase);
-    // Giá trị mặc định ban đầu (NOP)
-    vif.drv_cb.opcode  <= 7'b0010011;
-    vif.drv_cb.raw_imm <= 25'h0000000;
+    vif.drv_cb.raw_imm <= 20'b0;
+    vif.drv_cb.opcode  <= 7'b0;
 
     forever begin
       seq_item_port.get_next_item(req);
       @(vif.drv_cb);
-      vif.drv_cb.opcode  <= req.instr[6:0];
-      vif.drv_cb.raw_imm <= req.instr[31:7];
+      vif.drv_cb.raw_imm <= req.raw_imm;
+      vif.drv_cb.opcode  <= req.opcode;
       seq_item_port.item_done();
     end
   endtask
