@@ -16,14 +16,13 @@ class imm_gen_monitor extends uvm_monitor;
 
   task run_phase(uvm_phase phase);
     imm_gen_item item;
+    @(vif.drv_cb);
     forever begin
       @(vif.mon_cb);
       item = imm_gen_item::type_id::create("item");
-
-      // Ghép lại 32-bit instr hoàn chỉnh cho Model & Coverage dùng tiếp
-      item.instr   = {vif.mon_cb.raw_imm, vif.mon_cb.opcode};
-      item.imm_out = vif.mon_cb.imm;
-
+      item.raw_imm = vif.mon_cb.raw_imm;
+      item.opcode  = vif.mon_cb.opcode;
+      item.imm     = vif.mon_cb.imm;
       ap.write(item);
     end
   endtask
