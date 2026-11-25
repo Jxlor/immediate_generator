@@ -17,15 +17,15 @@ class imm_gen_scoreboard extends uvm_scoreboard;
 
   function void write(imm_gen_item item);
     logic [31:0] exp_imm;
-    model.set_instr(item.instr);
+    model.set_inputs(item.raw_imm, item.opcode);
     exp_imm = model.get_imm_expected();
 
-    if (item.imm_out === exp_imm) begin
+    if (item.imm === exp_imm) begin
       pass_cnt++;
     end else begin
       fail_cnt++;
-      `uvm_error("IMM_GEN_ERR", $sformatf("Instr=%h | Expected=%h | Actual=%h",
-                 item.instr, exp_imm, item.imm_out))
+      `uvm_error("IMM_GEN_ERR", $sformatf("Op=%b Raw=%h | Exp=%h | Act=%h",
+                 item.opcode, item.raw_imm, exp_imm, item.imm))
     end
   endfunction
 
