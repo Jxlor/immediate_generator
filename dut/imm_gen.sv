@@ -1,6 +1,6 @@
 `include "modules/headers/opcode.vh"
 
-module ImmediateGenerator (
+module Immediate_Generator (
     input [19:0] raw_imm, 	// raw immediate value from Instruction Decoder
 	input [6:0] opcode,		// opcode from Instruction Decoder
     output reg [31:0] imm	// sign-extension of the raw immediate value
